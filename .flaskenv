@@ -1,0 +1,3 @@
+FLASK_APP=triviamaster
+FLASK_CONFIG=development
+FLASK_DEBUG=true
