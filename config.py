@@ -11,7 +11,7 @@ class Config:
 
     @staticmethod
     def init_app(app):
-        pass 
+        pass
 
 
 class DevelopmentConfig(Config):
@@ -23,7 +23,7 @@ class TestingConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, "test-data.sqlite")
     TESTING = True
 
-    
+
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, "prod-data.sqlite")
     PRODUCTION = True

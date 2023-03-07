@@ -15,7 +15,7 @@ def create_app(config_name='default'):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
-    # Disable trailing slash 
+    # Disable trailing slash
     app.url_map.strict_slashes = False
 
     # Initialize extensions
