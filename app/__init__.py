@@ -26,7 +26,6 @@ def create_app(config_name='default'):
     from app.cli import bp as cli_bp
     app.register_blueprint(cli_bp)
 
-
     @app.shell_context_processor
     def make_shell_context():
         from app import models
