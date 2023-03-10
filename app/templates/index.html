@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <h2>{{ question.body }}</h2>
+    <form method="POST" action="{{ url_for('main.index', question_id=question.id) }}">
+      {% for answer in question.answers %}
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="answer" id="answer{{ answer.id }}" value="{{ answer.id }}" required>
+          <label class="form-check-label" for="answer{{ answer.id }}">
+            {{ answer.body }}
+          </label>
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+{% endblock %}
