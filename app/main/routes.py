@@ -7,7 +7,7 @@ from app.models import Category, Question
 
 @bp.route('/')
 def index():
-    return render_template('index.html',
-                           question=Question.query.first(),
-                           config=current_app.config,
-                           categories=Category.query.order_by(Category.name).all())
+    return render_template(
+        'index.html',
+        config=current_app.config,
+        categories=Category.query.order_by(Category.name).all())
