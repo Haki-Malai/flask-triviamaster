@@ -4,9 +4,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     # General Configs
-    TITLE = "TriviaMaster"
+    TITLE = 'TriviaMaster'
     SQLALCHEMY_TRACK_NOTIFICATIONS = False
-    REDIS_URL = os.environ.get("REDIS_URL") or "redis://"
+    REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
     ITEMS_PER_PAGE = 10
 
     @staticmethod
@@ -15,17 +15,17 @@ class Config:
 
 
 class DevelopmentConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, "dev-data.sqlite")
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'dev-data.sqlite')
     DEBUG = True
 
 
 class TestingConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, "test-data.sqlite")
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'test-data.sqlite')
     TESTING = True
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, "prod-data.sqlite")
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'prod-data.sqlite')
     PRODUCTION = True
 
 
