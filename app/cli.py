@@ -1,4 +1,5 @@
 import click
+from html import unescape
 from flask import Blueprint
 
 from app import db
@@ -27,16 +28,18 @@ def init(amount, drop):
 
     for item in data:
         # Create category if not exists
-        if not Category.query.filter_by(name=item['category']).first():
-            category = Category(name=item['category'])
+        category_name = unescape(item['category'])
+        category = Category.query.filter_by(name=category_name).first()
+        if not category:
+            category = Category(name=category_name)
             db.session.add(category)
             db.session.commit()
 
         question = Question(
-            body=item['question'],
+            body=unescape(item['question']),
             type=int(item['type'] == 'boolean'),
             difficulty=difficulty[item['difficulty']],
-            category_id=Category.query.filter_by(name=item['category']).first().id
+            category_id=category.id
         )
         db.session.add(question)
         db.session.commit()
@@ -44,7 +47,7 @@ def init(amount, drop):
         # Create incorrect answers
         for i in range(len(item['incorrect_answers'])):
             incorect_answer = Answer(
-                body=item['incorrect_answers'][i],
+                body=unescape(item['incorrect_answers'][i]),
                 correct=False,
                 question_id=question.id
             )
@@ -52,7 +55,7 @@ def init(amount, drop):
 
         # Create correct answer
         correct_answer = Answer(
-            body=item['correct_answer'],
+            body=unescape(item['correct_answer']),
             correct=True,
             question_id=question.id
         )
