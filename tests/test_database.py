@@ -1,6 +1,6 @@
-from tests.base_test_case import BaseTestCase
 from unittest.mock import patch, Mock
 
+from tests.base_test_case import BaseTestCase
 from app.retrieve_data import retrieve_data
 from app.models import Question, Answer
 
