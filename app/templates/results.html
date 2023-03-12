@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<div class="alert alert-success" role="alert">
+		You got {{ game.score }} out of {{ game.question_count }}!
+	</div>
+	<ol class="container">
+		{% for game_question in game.game_questions %}
+			<li>
+				{% if game_question.answer_correct %}
+					<h2 class="correct">{{ game_question.question.body }}</h2>
+				{% else %}
+					<h2 class="incorrect">{{ game_question.question.body }}</h2>
+				{% endif %}
+				<ol>
+					{% for answer in game_question.question.answers %}
+						<li>
+							{% if answer.id == game_question.answer_id and answer.correct %}
+								<h6 class="correct selected">{{ answer.body }}</h6>
+							{% elif answer.id == game_question.answer_id and not answer.correct %}
+								<h6 class="selected incorrect">{{ answer.body }}</h6>
+							{% elif not answer.correct %}
+								<h6 class="incorrect">{{ answer.body }}</h6>
+							{% else %}
+								<h6 class="correct">{{ answer.body }}</h6>
+							{% endif %}
+						</li>
+					{% endfor %}
+				</ol>
+			</li>
+		{% endfor %}
+	</ol>
+{% endblock %}

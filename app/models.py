@@ -23,15 +23,19 @@ class Game(db.Model):
 
     @property
     def answered_count(self):
-        return self.game_questions.filter_by(answered=True).count()
+        return self.game_questions.filter(GameQuestion.answer_id.isnot(None)).count()
 
     @property
     def progress(self):
         return self.answered_count / self.question_count * 100
+    
+    @property
+    def finished(self):
+        return self.answered_count == self.question_count
 
     def next_question(self):
         for game_question in self.game_questions:
-            if not game_question.answered:
+            if not game_question.answer_id:
                 return game_question.question
 
     def generate_questions(self, num_questions=5, category_id=None):
@@ -50,7 +54,7 @@ class Game(db.Model):
         game_question = self.game_questions.filter_by(
             question_id=question_id).first()
         if game_question:
-            game_question.answered = True
+            game_question.answer_id = answer_id
             if answer_id:
                 answer = Answer.query.get(answer_id)
                 if answer.correct:
@@ -77,8 +81,15 @@ class Question(db.Model):
 
 
 class GameQuestion(db.Model):
+    """GameQuestion model
+
+    This model is used to keep track of which questions have been answered in
+    a game.
+    """
     id = db.Column(db.Integer, primary_key=True)
-    answered = db.Column(db.Boolean, default=False, nullable=False)
+    answer_id = db.Column(db.Integer,
+                          db.ForeignKey('answer.id'),
+                          nullable=True)
     game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
     question_id = db.Column(db.Integer,
                             db.ForeignKey('question.id'),
@@ -89,6 +100,11 @@ class GameQuestion(db.Model):
 
     def __repr__(self):
         return "<GameQuestion %r>" % self.id
+    
+    @property
+    def answer_correct(self):
+        if self.answer_id:
+            return Answer.query.get(self.answer_id).correct
 
 
 class Answer(db.Model):
