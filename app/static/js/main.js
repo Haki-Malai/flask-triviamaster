@@ -10,6 +10,7 @@ setInterval(function() {
     timeRemaining -= 1;
     if (timeRemaining < 0) {
         timeRemaining = 0;
+        location.reload(true);
     }
 
     // Update the HTML element with the new time remaining

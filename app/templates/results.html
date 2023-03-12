@@ -9,8 +9,11 @@
 			<li>
 				{% if game_question.answer_correct %}
 					<h2 class="correct">{{ game_question.question.body }}</h2>
-				{% else %}
+				{% elif game_question.answer_correct == False %}
 					<h2 class="incorrect">{{ game_question.question.body }}</h2>
+				{% else %}
+					<h2>{{ game_question.question.body }} </h2>
+					<h5>(Timeout)</h5>
 				{% endif %}
 				<ol>
 					{% for answer in game_question.question.answers %}
