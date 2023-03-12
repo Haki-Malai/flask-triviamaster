@@ -14,11 +14,12 @@ def index():
         categories=Category.query.order_by(Category.name).all())
 
 
+@bp.route('/category_game/<int:category_id>')
 @bp.route('/game')
-def start_game():
+def start_game(category_id=None):
     game = Game()
     db.session.add(game)
-    game.generate_questions()
+    game.generate_questions(category_id=category_id)
     db.session.commit()
     return redirect(url_for('main.show_game', game_id=game.id))
 

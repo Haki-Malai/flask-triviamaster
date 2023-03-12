@@ -125,7 +125,9 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
 
-    questions = db.relationship('Question', back_populates='category')
+    questions = db.relationship('Question',
+                                back_populates='category',
+                                lazy='dynamic')
 
     def __repr__(self):
             return "<Category %r>" % self.name
