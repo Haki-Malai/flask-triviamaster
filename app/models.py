@@ -16,19 +16,19 @@ class Game(db.Model):
     @property
     def questions(self):
         return [game_question.question for game_question in self.game_questions]
-    
+
     @property
     def question_count(self):
         return self.game_questions.count()
-    
+
     @property
     def answered_count(self):
         return self.game_questions.filter_by(answered=True).count()
-    
+
     @property
     def progress(self):
         return self.answered_count / self.question_count * 100
-    
+
     def next_question(self):
         for game_question in self.game_questions:
             if not game_question.answered:
@@ -45,7 +45,7 @@ class Game(db.Model):
             game_questions = GameQuestion(game_id=self.id,
                                           question_id=question.id)
             db.session.add(game_questions)
-    
+
     def answer_question(self, question_id, answer_id):
         game_question = self.game_questions.filter_by(
             question_id=question_id).first()
