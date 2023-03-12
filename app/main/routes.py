@@ -37,7 +37,7 @@ def show_game(game_id):
         'game.html',
         config=current_app.config,
         game=game,
-        question=game.next_question(),
+        game_question=game.next_question(),
         categories=Category.query.order_by(Category.name).all())
 
 

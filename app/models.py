@@ -1,3 +1,4 @@
+import time
 from sqlalchemy.sql.expression import func
 
 from app import db
@@ -36,7 +37,7 @@ class Game(db.Model):
     def next_question(self):
         for game_question in self.game_questions:
             if not game_question.answer_id:
-                return game_question.question
+                return game_question
 
     def generate_questions(self, num_questions=5, category_id=None):
         if category_id:
@@ -88,6 +89,8 @@ class GameQuestion(db.Model):
     a game.
     """
     id = db.Column(db.Integer, primary_key=True)
+    start_time = db.Column(db.Float, nullable=False)
+    time_limit = db.Column(db.Float, nullable=False, default=30.0)
     answer_id = db.Column(db.Integer,
                           db.ForeignKey('answer.id'),
                           nullable=True)
@@ -102,6 +105,21 @@ class GameQuestion(db.Model):
     def __repr__(self):
         return "<GameQuestion %r>" % self.id
     
+    def __init__(self, game_id, question_id):
+        super(GameQuestion, self).__init__(game_id=game_id,
+                                           question_id=question_id)
+        self.start_time = time.time()
+
+    def time_remaining(self):
+        return 30 - (time.time() - self.start_time)
+
+    def time_remaining(self):
+        return max(0, self.time_limit - int(time.time() - self.start_time))
+
+    @property
+    def expired(self):
+        return self.time_remaining() == 0
+  
     @property
     def answer_correct(self):
         if self.answer_id:

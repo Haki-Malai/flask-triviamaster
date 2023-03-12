@@ -6,10 +6,11 @@
       <div style="width: {{game.progress}}%" class="progress-bar progress-bar-striped progress-bar-animated bg-dark" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
     <div class="container">
-      <h2>{{ question.body }}</h2>
+      <p id="time-remaining">Time remaining: {{ game_question.time_remaining() }} seconds</p>
+      <h2>{{ game_question.question.body }}</h2>
       <form method="POST" action="{{ url_for('main.play_game', game_id=game.id) }}">
-        <input type="hidden" name="question_id" value="{{ question.id }}">
-        {% for answer in question.answers %}
+        <input type="hidden" name="question_id" value="{{ game_question.question.id }}">
+        {% for answer in game_question.question.answers %}
           <div class="form-check">
             <input class="form-check-input bg-dark" type="radio" name="answer_id" id="answer{{ answer.id }}" value="{{ answer.id }}" required>
             <label class="form-check-label" for="answer{{ answer.id }}">
