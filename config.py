@@ -7,7 +7,7 @@ class Config:
     TITLE = 'TriviaMaster'
     SECRET_KEY = 'secret'
     SQLALCHEMY_TRACK_NOTIFICATIONS = False
-    ITEMS_PER_PAGE = 10
+    QUESTIONS_PER_GAME = 10
 
     @staticmethod
     def init_app(app):

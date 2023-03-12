@@ -19,7 +19,9 @@ def index():
 def start_game(category_id=None):
     game = Game()
     db.session.add(game)
-    game.generate_questions(category_id=category_id)
+    game.generate_questions(
+        num_questions=current_app.config['QUESTIONS_PER_GAME'],
+        category_id=category_id)
     db.session.commit()
     return redirect(url_for('main.show_game', game_id=game.id))
 
