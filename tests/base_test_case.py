@@ -31,8 +31,8 @@ class BaseTestCase(unittest.TestCase):
                             self.answer2,
                             self.game])
         db.session.commit()
-        self.game_question = GameQuestion(game=self.game,
-                                          question=self.question)
+        self.game_question = GameQuestion(game_id=self.game.id,
+                                          question_id=self.question.id)
         db.session.add(self.game_question)
         db.session.commit()
 

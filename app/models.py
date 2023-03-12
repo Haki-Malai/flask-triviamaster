@@ -5,6 +5,10 @@ from app import db
 
 
 class Game(db.Model):
+    """Game model
+    A game is a collection of questions that are or are not answered by a
+    player.
+    """
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer, default=0, nullable=False)
     game_questions = db.relationship('GameQuestion',
@@ -16,7 +20,8 @@ class Game(db.Model):
 
     @property
     def questions(self):
-        return [game_question.question for game_question in self.game_questions]
+        return [game_question.question
+                for game_question in self.game_questions]
 
     @property
     def question_count(self):
@@ -24,19 +29,29 @@ class Game(db.Model):
 
     @property
     def answered_count(self):
-        return self.game_questions.filter(GameQuestion.answer_id.isnot(None)).count()
+        return self.game_questions.filter(
+            GameQuestion.answer_id.isnot(None)).count()
+
+    @property
+    def timeout_count(self):
+        return self.game_questions.filter_by(timeout=True).count()
 
     @property
     def progress(self):
-        return self.answered_count / self.question_count * 100
-    
+        return (self.answered_count + self.timeout_count) / self.question_count * 100
+
     @property
     def finished(self):
-        return self.answered_count == self.question_count
+        return (self.answered_count + self.timeout_count) == self.question_count
 
     def next_question(self):
         for game_question in self.game_questions:
-            if not game_question.answer_id:
+            if not game_question.answer_id and not game_question.timeout:
+                if game_question.time_remaining() <= 0:
+                    game_question.timeout = True
+                    db.session.commit()
+                    return None
+                game_question.start_time = time.time()
                 return game_question
 
     def generate_questions(self, num_questions=5, category_id=None):
@@ -65,6 +80,9 @@ class Game(db.Model):
 
 
 class Question(db.Model):
+    """Question model
+    A question is a question that can be asked in a game.
+    """
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(255), nullable=False)
     type = db.Column(db.String(128), nullable=False)
@@ -84,13 +102,13 @@ class Question(db.Model):
 
 class GameQuestion(db.Model):
     """GameQuestion model
-
     This model is used to keep track of which questions have been answered in
     a game.
     """
     id = db.Column(db.Integer, primary_key=True)
     start_time = db.Column(db.Float, nullable=False)
     time_limit = db.Column(db.Float, nullable=False, default=30.0)
+    timeout = db.Column(db.Boolean, nullable=False, default=False)
     answer_id = db.Column(db.Integer,
                           db.ForeignKey('answer.id'),
                           nullable=True)
@@ -111,10 +129,12 @@ class GameQuestion(db.Model):
         self.start_time = time.time()
 
     def time_remaining(self):
-        return 30 - (time.time() - self.start_time)
-
-    def time_remaining(self):
-        return max(0, self.time_limit - int(time.time() - self.start_time))
+        remaining_time = max(
+            0,self.time_limit - int(time.time() - self.start_time))
+        if remaining_time == 0 and not self.timeout:
+            self.timeout = True
+            db.session.commit()
+        return remaining_time
 
     @property
     def expired(self):
@@ -127,6 +147,9 @@ class GameQuestion(db.Model):
 
 
 class Answer(db.Model):
+    """Answer model
+    An answer is a possible answer to a question.
+    """
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(128), nullable=False)
     correct = db.Column(db.Boolean, nullable=False)
@@ -141,6 +164,9 @@ class Answer(db.Model):
 
 
 class Category(db.Model):
+    """Category model
+    A category is a collection of questions.
+    """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
 

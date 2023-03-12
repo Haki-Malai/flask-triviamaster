@@ -17,6 +17,9 @@ def index():
 @bp.route('/category_game/<int:category_id>')
 @bp.route('/game')
 def start_game(category_id=None):
+    """Start a new game
+    
+    """
     game = Game()
     db.session.add(game)
     game.generate_questions(
