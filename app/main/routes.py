@@ -1,4 +1,5 @@
-from flask import render_template, current_app, request, redirect, url_for
+from flask import render_template, current_app, request, redirect, url_for, \
+    flash
 
 from app import db
 from app.main import bp
@@ -37,6 +38,9 @@ def play_game(game_id):
     game = Game.query.get(game_id)
     question_id = request.form.get('question_id')
     answer_id = request.form.get('answer_id')
-    game.answer_question(question_id, answer_id)
+    if game.answer_question(question_id, answer_id):
+        flash('Correct!', 'success')
+    else:
+        flash('Incorrect!', 'danger')
     db.session.commit()
     return redirect(url_for('main.play_game', game_id=game.id))

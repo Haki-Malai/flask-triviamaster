@@ -11,7 +11,7 @@
         <input type="hidden" name="question_id" value="{{ question.id }}">
         {% for answer in question.answers %}
           <div class="form-check">
-            <input class="form-check-input bg-dark" type="radio" name="answer" id="answer{{ answer.id }}" value="{{ answer.id }}" required>
+            <input class="form-check-input bg-dark" type="radio" name="answer_id" id="answer{{ answer.id }}" value="{{ answer.id }}" required>
             <label class="form-check-label" for="answer{{ answer.id }}">
               {{ answer.body }}
             </label>

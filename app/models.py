@@ -45,6 +45,17 @@ class Game(db.Model):
             game_questions = GameQuestion(game_id=self.id,
                                           question_id=question.id)
             db.session.add(game_questions)
+    
+    def answer_question(self, question_id, answer_id):
+        game_question = self.game_questions.filter_by(
+            question_id=question_id).first()
+        if game_question:
+            game_question.answered = True
+            if answer_id:
+                answer = Answer.query.get(answer_id)
+                if answer.correct:
+                    self.score += 1
+                    return True
 
 
 class Question(db.Model):
