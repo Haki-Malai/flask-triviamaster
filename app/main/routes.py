@@ -25,11 +25,12 @@ def start_game():
 
 @bp.route('/game/<int:game_id>')
 def show_game(game_id):
+    game = Game.query.get(game_id)
     return render_template(
         'game.html',
         config=current_app.config,
-        game=Game.query.get(game_id),
-        question=Game.query.get(game_id).next_question(),
+        game=game,
+        question=game.next_question(),
         categories=Category.query.order_by(Category.name).all())
 
 
