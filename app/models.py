@@ -139,7 +139,7 @@ class GameQuestion(db.Model):
     @property
     def expired(self):
         return self.time_remaining() == 0
-  
+
     @property
     def answer_correct(self):
         if self.answer_id:
