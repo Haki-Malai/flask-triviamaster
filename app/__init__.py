@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -27,6 +27,16 @@ def create_app(config_name='default'):
     app.register_blueprint(cli_bp)
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
+
+    # Error handlers
+    @app.errorhandler(404)
+    def not_found_error(error):
+        return redirect(url_for('main.index'))
+
+    # Error handlers
+    @app.errorhandler(500)
+    def server_error(error):
+        return redirect(url_for('main.index'))
 
     @app.shell_context_processor
     def make_shell_context():
