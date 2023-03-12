@@ -7,7 +7,6 @@ class Config:
     TITLE = 'TriviaMaster'
     SECRET_KEY = 'secret'
     SQLALCHEMY_TRACK_NOTIFICATIONS = False
-    REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
     ITEMS_PER_PAGE = 10
 
     @staticmethod
