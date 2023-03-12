@@ -3,7 +3,7 @@ from tests.base_test_case import BaseTestCase
 from app.models import Game, Question, GameQuestion, Answer, Category
 
 
-class TestGame(BaseTestCase):
+class TestModel(BaseTestCase):
 
     def test_game_model(self):
         self.assertEqual(self.game.score, 0)
