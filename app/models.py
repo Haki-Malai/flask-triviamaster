@@ -122,7 +122,7 @@ class GameQuestion(db.Model):
 
     def __repr__(self):
         return "<GameQuestion %r>" % self.id
-    
+
     def __init__(self, game_id, question_id):
         super(GameQuestion, self).__init__(game_id=game_id,
                                            question_id=question_id)
