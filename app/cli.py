@@ -9,12 +9,12 @@ bp = Blueprint('cli', __name__, cli_group=None)
 
 @bp.cli.command('get_data')
 @click.option('--amount',
-              default=50,
-              help='Number of questions to fetch. Max 50.')
+              default=Config.QUESTIONS_TO_RETRIEVE,
+              help='Number of questions to fetch.')
 @click.option('--drop',
               is_flag=True,
               help='Drop all tables before initializing.')
-def get_data(amount=50, drop=True):
+def get_data(amount=Config.QUESTIONS_TO_RETRIEVE, drop=False):
     """Fetch questions from Open Trivia DB API and initialize the database.
     """
     retrieve_data(amount, drop)

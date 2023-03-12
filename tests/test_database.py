@@ -11,7 +11,9 @@ class TestDatabase(BaseTestCase):
         with self.app.app_context():
             # Check if data has been retrieved on this test run
             if not BaseTestCase.data_retrieved:
-                retrieve_data(silent=True)
+                retrieve_data(amount=self.app.config['QUESTIONS_TO_RETRIEVE'],
+                              drop=True,
+                              silent=True)
                 BaseTestCase.data_retrieved = True    
                 
     def test_retrieve_data(self):
@@ -37,7 +39,8 @@ class TestDatabase(BaseTestCase):
         with patch('requests.get', return_value=mock_response):
             retrieve_data(amount=1, drop=True, silent=True)
         # check if the database has been initialized correctly
-        question = Question.query.filter_by(body='What is the capital of France?').first()
+        question = Question.query.filter_by(
+            body='What is the capital of France?').first()
         self.assertIsNotNone(question)
         self.assertEqual(question.difficulty, 1)
         # check if the category has been created

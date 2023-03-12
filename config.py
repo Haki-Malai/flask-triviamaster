@@ -7,6 +7,7 @@ class Config:
     TITLE = 'TriviaMaster'
     SECRET_KEY = 'secret'
     SQLALCHEMY_TRACK_NOTIFICATIONS = False
+    QUESTIONS_TO_RETRIEVE = 50
     QUESTIONS_PER_GAME = 10
 
     @staticmethod
@@ -20,6 +21,8 @@ class DevelopmentConfig(Config):
 
 
 class TestingConfig(Config):
+    QUESTIONS_TO_RETRIEVE = 10
+    QUESTIONS_PER_GAME = 5
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'test-data.sqlite')
     TESTING = True
 
