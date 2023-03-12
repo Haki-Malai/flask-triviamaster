@@ -3,7 +3,7 @@ from flask import render_template, current_app, request, redirect, url_for, \
 
 from app import db
 from app.main import bp
-from app.models import Category, Question, Game
+from app.models import Category, Game
 
 
 @bp.route('/')
@@ -18,7 +18,7 @@ def index():
 @bp.route('/game')
 def start_game(category_id=None):
     """Start a new game
-    
+    Creates a new game and redirects to the game page.
     """
     game = Game()
     db.session.add(game)
@@ -31,6 +31,9 @@ def start_game(category_id=None):
 
 @bp.route('/game/<int:game_id>')
 def show_game(game_id):
+    """Show the game page
+    If the game is finished, redirects to the results page.
+    """
     game = Game.query.get(game_id)
     if not game:
         return redirect(url_for('main.index'))
@@ -46,6 +49,9 @@ def show_game(game_id):
 
 @bp.route('/game/<int:game_id>', methods=['POST'])
 def play_game(game_id):
+    """Play the game
+    If the game is finished, redirects to the results page.
+    """
     game = Game.query.get(game_id)
     if not game:
         return redirect(url_for('main.index'))
@@ -61,6 +67,9 @@ def play_game(game_id):
 
 @bp.route('/game/<int:game_id>/results')
 def game_results(game_id):
+    """Show the game results
+    If the game is not finished, redirects to the game page.
+    """
     game = Game.query.get(game_id)
     if not game:
         return redirect(url_for('main.index'))

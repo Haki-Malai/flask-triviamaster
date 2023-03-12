@@ -26,7 +26,8 @@ def get_data(amount=Config.QUESTIONS_TO_RETRIEVE, drop=False):
                 help="Test file name patern. Default is 'test_*'.")
 @click.option('--verbosity', default=2, type=int)
 def test(patern, verbosity):
-    """Run the tests.
+    """Run the tests
+    Use the patern to select a subset of tests.
     """
     import unittest
     patern = f'test_*{patern}*.py'
