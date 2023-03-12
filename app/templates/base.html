@@ -2,50 +2,54 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
+    <title>{{ config['TITLE'] }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap JS & CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
     <!-- Custom JS & CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('main.index') }}">My App</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">{{ config['TITLE'] }}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0" aria-labelledby="dropdownMenuButton1">
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
+              <a class="nav-link active" href="{{ url_for('main.index') }}">Home</a>
             </li class="nav-item">
-            <li>
-              <a class="nav-link" href="{{ url_for('main.index') }}">Questions</a>
-            </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('main.index') }}">Categories</a>
+              <a class="nav-link dropdown-toggle" href="{{ url_for('main.index') }}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Categories
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark bg-dark" aria-labelledby="navbarDropdown">
+                {% for category in categories %}
+                  <li><a class="dropdown-item" href="{{ url_for('main.start_game', category_id=category.id) }}">{{ category.name }}</a></li>
+                {% endfor %}
+              </ul>
             </li>
           </ul>
         </div>
-
       </div>
     </nav>
+    <br>
     <div class="container-fluid">
-      {% with messages = get_flashed_messages() %}
+      {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-          {% for message in messages %}
-            <div class="alert alert-{{ message[0] }} alert-dismissible fade show" role="alert">
-              {{ message[1] }}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" style="position: relative; margin-bottom: 10px;">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
           {% endfor %}
         {% endif %}
       {% endwith %}
       {% block content %}{% endblock %}
     </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   </body>
 </html>

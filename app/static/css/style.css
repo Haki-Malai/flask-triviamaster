@@ -1,0 +1,22 @@
+.question {
+  display: flex;
+  flex-direction: column; /* align items vertically */
+  align-items: center; /* vertically center the child items */
+}
+
+.correct {
+  color: #016901;
+}
+
+.incorrect {
+  color: #5c0101;
+}
+
+.selected {
+  background-color: #7271c275;
+  max-width: fit-content;
+  border-radius: 5px;
+  padding-right: 5px;
+  padding-left: 5px;
+  margin-left: -5px;
+}
