@@ -5,7 +5,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     # General Configs
     TITLE = 'TriviaMaster'
-    SECRET_KEY = 'secret'
+    SECRET_KEY = os.getenv('SECRET_KEY')
     SQLALCHEMY_TRACK_NOTIFICATIONS = False
     QUESTIONS_TO_RETRIEVE = 50
     QUESTIONS_PER_GAME = 10

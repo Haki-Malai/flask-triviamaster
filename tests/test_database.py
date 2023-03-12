@@ -26,7 +26,7 @@ class TestDatabase(BaseTestCase):
                 }
             ]
         }
-        # Patch the requests.get() function with the mock response object        
+        # Patch the requests.get() function with the mock response object
         with patch('requests.get', return_value=mock_response):
             retrieve_data(amount=1, silent=True)
         # Check if the database has been initialized correctly

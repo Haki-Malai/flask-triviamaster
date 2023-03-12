@@ -61,7 +61,7 @@ class Game(db.Model):
             query = Question.query
         query = query.order_by(func.random())
         questions = query.order_by(func.random()).limit(num_questions).all()
-        
+
         for question in questions:
             game_questions = GameQuestion(game_id=self.id,
                                           question_id=question.id)

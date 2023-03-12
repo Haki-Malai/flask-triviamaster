@@ -55,5 +55,5 @@ def retrieve_data(amount=10, drop=True, silent=False):
         )
         db.session.add(correct_answer)
     db.session.commit()
-    
+
     if not silent: print('Initialized the database.')
