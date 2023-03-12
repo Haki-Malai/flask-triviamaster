@@ -43,6 +43,7 @@ class Game(db.Model):
             query = Category.query.get(category_id).questions
         else:
             query = Question.query
+        query = query.order_by(func.random())
         questions = query.order_by(func.random()).limit(num_questions).all()
         
         for question in questions:
