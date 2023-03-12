@@ -1,7 +1,5 @@
 from tests.base_test_case import BaseTestCase
 
-from app.models import Game, Question, GameQuestion, Answer, Category
-
 
 class TestModel(BaseTestCase):
 

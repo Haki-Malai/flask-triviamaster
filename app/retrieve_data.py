@@ -11,6 +11,7 @@ def retrieve_data(amount=10, drop=True, silent=False):
 
     # Drop all tables if drop flag is set
     if drop:
+        db.session.close()
         db.drop_all()
         db.create_all()
 
@@ -53,6 +54,6 @@ def retrieve_data(amount=10, drop=True, silent=False):
             question_id=question.id
         )
         db.session.add(correct_answer)
-        db.session.commit()
+    db.session.commit()
     
     if not silent: print('Initialized the database.')
